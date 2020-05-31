@@ -18,6 +18,14 @@ class HomeControllerTest extends TestCase
      */
 
     /** @test */
+    public function create_accounts()
+    {
+        $this->assertCount(0, User::all());
+        factory(User::class)->create();
+        $this->assertCount(1, User::all());
+    }
+
+    /** @test */
     public function only_logged_in_users_can_see_the_accounts_list()
     {
         $response = $this->get('/home')->assertRedirect('/login');

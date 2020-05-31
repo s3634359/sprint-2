@@ -65,21 +65,4 @@ class TypeController extends Controller
 
         return response()->json([$request->all()]);
     }
-
-    public function typeEdit(Request $request)
-    {   
-        $type = Type::find($request['id']);
-        $type->name = $request['name'];
-        $type->save();
-
-        return response()->json([$request->all()]);
-    }
-
-    public function typeRemove(Request $request)
-    {
-        Type::destroy($request['id']);
-        
-        return response()->json([$request->all()]);
-    }
-
 }

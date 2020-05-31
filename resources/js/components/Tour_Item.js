@@ -134,26 +134,27 @@ function Tour_Item(props) {
                     location_id: location.id,
                     location_order: location.order
                 })
-                .then(function(response) {
+                .then(function (response) {
                     console.log(response.data);
+                    axios
+                        .post("/tourTimeUpdate", {
+                            id: tour_id,
+                            min_time: min_time
+                        })
+                        .then(function (response) {
+                            console.log(response.data);
+                            handleCancel();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error);
                 });
         }
 
-        axios
-            .post("/tourTimeUpdate", {
-                id: tour_id,
-                min_time: min_time
-            })
-            .then(function(response) {
-                console.log(response.data);
-                handleCancel();
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+
     };
 
     const handleDelete = event => {
@@ -164,7 +165,7 @@ function Tour_Item(props) {
                 id: tour_id,
                 location_id: location_id
             })
-            .then(function(response) {
+            .then(function (response) {
                 console.log(JSON.parse(response.config.data).location_id);
 
                 setLocations(
@@ -175,7 +176,7 @@ function Tour_Item(props) {
                     )
                 );
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.log(error);
             });
 
@@ -207,7 +208,7 @@ function Tour_Item(props) {
         );
     }
 
-    React.useEffect(() => {}, [locations]);
+    React.useEffect(() => { }, [locations]);
 
     return (
         <React.Fragment>
@@ -254,62 +255,62 @@ function Tour_Item(props) {
                     No Locations
                 </Typography>
             ) : (
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="droppable">
-                        {(provided, snapshot) => (
-                            <RootRef rootRef={provided.innerRef}>
-                                <List
-                                    style={getListStyle(
-                                        snapshot.isDraggingOver
-                                    )}
-                                >
-                                    {locations.map((location, index) => (
-                                        <Draggable
-                                            key={location.id}
-                                            draggableId={location.name}
-                                            index={index}
-                                        >
-                                            {(provided, snapshot) => (
-                                                <ListItem
-                                                    ContainerComponent="li"
-                                                    ContainerProps={{
-                                                        ref: provided.innerRef
-                                                    }}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps
-                                                            .style
-                                                    )}
-                                                >
-                                                    <ListItemIcon>
-                                                        <LocationOn />
-                                                    </ListItemIcon>
-                                                    <ListItemText
-                                                        primary={location.name}
-                                                    />
-                                                    <ListItemSecondaryAction>
-                                                        <IconButton
-                                                            value={location.id}
-                                                            onClick={
-                                                                modalHandleOpen
-                                                            }
-                                                        >
-                                                            <DeleteOutline />
-                                                        </IconButton>
-                                                    </ListItemSecondaryAction>
-                                                </ListItem>
-                                            )}
-                                        </Draggable>
-                                    ))}
-                                    {provided.placeholder}
-                                </List>
-                            </RootRef>
-                        )}
-                    </Droppable>
-                </DragDropContext>
-            )}
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable">
+                            {(provided, snapshot) => (
+                                <RootRef rootRef={provided.innerRef}>
+                                    <List
+                                        style={getListStyle(
+                                            snapshot.isDraggingOver
+                                        )}
+                                    >
+                                        {locations.map((location, index) => (
+                                            <Draggable
+                                                key={location.id}
+                                                draggableId={location.name}
+                                                index={index}
+                                            >
+                                                {(provided, snapshot) => (
+                                                    <ListItem
+                                                        ContainerComponent="li"
+                                                        ContainerProps={{
+                                                            ref: provided.innerRef
+                                                        }}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        style={getItemStyle(
+                                                            snapshot.isDragging,
+                                                            provided.draggableProps
+                                                                .style
+                                                        )}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <LocationOn />
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            primary={location.name}
+                                                        />
+                                                        <ListItemSecondaryAction>
+                                                            <IconButton
+                                                                value={location.id}
+                                                                onClick={
+                                                                    modalHandleOpen
+                                                                }
+                                                            >
+                                                                <DeleteOutline />
+                                                            </IconButton>
+                                                        </ListItemSecondaryAction>
+                                                    </ListItem>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </List>
+                                </RootRef>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                )}
             <Dialog
                 open={modalOpen}
                 TransitionComponent={Transition}

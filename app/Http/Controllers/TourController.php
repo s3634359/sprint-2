@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Tour;
+use App\ToursLocations;
+use App\ToursTypes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -102,21 +104,23 @@ class TourController extends Controller
 
     public function tourSubmitLocation(Request $request)
     {
-        $data = DB::select('select * from tours_locations where tour_id = ? and location_id = ?', [$request['id'], $request['location_id']]);
-        if ($data != null) {
-            DB::table('tours_locations')
-                ->where('tour_id', $request['id'])
-                ->where('location_id', $request['location_id'])
-                ->update(['order' => $request['location_order']]);
+        $tours_locations = ToursLocations::where('tour_id', '=', $request['id'])->where('location_id', '=', $request['location_id'])->first();
+        if ($tours_locations != null) {
+            $tours_locations->order = $request['location_order'];
+            $tours_locations->save();
         } else {
-            DB::insert('insert into tours_locations values (NULL, ?, ?, ?)', [$request['id'], $request['location_order'], $request['location_id']]);
+            $tours_locations = new ToursLocations;
+            $tours_locations->order = $request['location_order'];
+            $tours_locations->tour_id = $request['id'];
+            $tours_locations->location_id = $request['location_id'];
+            $tours_locations->save();
         }
         return response()->json([$request->all()]);
     }
 
     public function tourDeleteLocation(Request $request)
     {
-        DB::delete('delete from tours_locations where tour_id = ? and location_id = ?', [$request['id'], $request['location_id']]);
+        ToursLocations::where('tour_id', '=', $request['id'])->where('location_id', '=', $request['location_id'])->delete();
         return response()->json([$request->all()]);
     }
 
@@ -129,16 +133,19 @@ class TourController extends Controller
 
     public function tourSubmitType(Request $request)
     {
-        $data = DB::select('select * from tours_types where tour_id = ? and type_id = ?', [$request['id'], $request['type_id']]);
-        if ($data == null) {
-            DB::insert('insert into tours_types values (NULL, ?, ?)', [$request['id'], $request['type_id']]);
+        $tours_types = ToursTypes::where('tour_id', '=', $request['id'])->where('type_id', '=', $request['type_id'])->first();
+        if ($tours_types == null) {
+            $tours_types = new ToursTypes;
+            $tours_types->tour_id = $request['id'];
+            $tours_types->type_id = $request['type_id'];
+            $tours_types->save();
         }
         return response()->json([$request->all()]);
     }
 
     public function tourDeleteType(Request $request)
     {
-        DB::delete('delete from tours_types where tour_id = ? and type_id = ?', [$request['id'], $request['type_id']]);
+        ToursTypes::where('tour_id', '=', $request['id'])->where('type_id', '=', $request['type_id'])->delete();
         return response()->json([$request->all()]);
     }
     

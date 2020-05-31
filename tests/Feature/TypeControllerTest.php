@@ -49,40 +49,21 @@ class TypeControllerTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_edit_an_existing_type()
+    public function an_assistant_can_not_add_a_new_type()
     {
-        $response = $this->actingAs(factory(User::class)->create());
-        
-        $type = factory(Type::class)->create();
-        $type_id = $type->id;
-
-        $this->assertCount(1, Type::all());
-        
-        $response = $this->post('/typeEdit', [
-            'id' => $type_id,
-            'name' => 'test',
-        ]);
-
-        $type_name = Type::where('id', $type_id)->pluck('name')->first();
-        $this->assertCount(1, Type::all());
-        $this->assertEquals('test', $type_name);
-    }
-
-    /** @test */
-    public function an_admin_can_delete_an_existing_type()
-    {
-        $response = $this->actingAs(factory(User::class)->create());
-        
-        $type = factory(Type::class)->create();
-        $type_id = $type->id;
-
-        $this->assertCount(1, Type::all());
-        
-        $response = $this->post('/typeRemove', [
-            'id' => $type_id,
-        ]);
+        $response = $this->actingAs(factory(User::class)->create([
+            'position' => 'assistant'
+        ]));       
 
         $this->assertCount(0, Type::all());
+
+        factory(Type::class)->create();
+        
+        $response = $this->post('/typeSubmit', [
+            'name' => 'Test Type',
+        ]);
+
+        $this->assertCount(1, Type::all());
     }
 
 }

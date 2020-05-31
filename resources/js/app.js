@@ -16,6 +16,6 @@ require('./components/Index');
 require('./components/Home');
 require('./components/Tour');
 require('./components/Type');
-require('./components/Tour_Type');
 require('./components/Tour_Item');
+require('./components/Tour_Type');
 require('./components/Location');

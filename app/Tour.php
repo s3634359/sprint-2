@@ -18,14 +18,4 @@ class Tour extends Model
         'name', 'min_time',
     ];
 
-    public function locations()
-    {
-        return $this->hasMany('App\Location');
-    }
-
-    public function types()
-    {
-        return $this->hasMany('App\Type');
-    }
-
 }

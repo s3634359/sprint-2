@@ -50,33 +50,6 @@ function Type(props) {
                         columns={state.columns}
                         data={state.data}
                         editable={{
-                            onRowDelete: oldData =>
-                                new Promise(resolve => {
-                                    setTimeout(() => {
-                                        resolve();
-
-                                        axios
-                                            .post("/typeRemove", {
-                                                id: oldData.id,
-                                                name: oldData.name
-                                            })
-                                            .then(function (response) {
-                                                setState(prevState => {
-                                                    const data = [...prevState.data];
-                                                    data.splice(
-                                                        data.indexOf(oldData),
-                                                        1
-                                                    );
-                                                    return { ...prevState, data };
-                                                });
-                                            })
-                                            .catch(function (error) {
-                                                console.log(error);
-                                            });
-
-                                        
-                                    }, 600);
-                                }),
                             onRowUpdate: (newData, oldData) =>
                                 new Promise(resolve => {
                                     setTimeout(() => {
@@ -102,8 +75,6 @@ function Type(props) {
                                             .catch(function (error) {
                                                 console.log(error);
                                             });
-
-                                        
                                     }, 600);
                                 }),
                             onRowAdd: newData =>

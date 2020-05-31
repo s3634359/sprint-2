@@ -199,20 +199,6 @@ function Tour(props) {
                                         >
                                             {tour.name} ({tour.min_time} sec.)
                                         </Typography>
-                                        {types.map(type =>
-                                            type.tour_id === tour.id ? (
-                                                <Button
-                                                    variant="contained"
-                                                    className={
-                                                        classes.typeButton
-                                                    }
-                                                >
-                                                    {type.name}
-                                                </Button>
-                                            ) : (
-                                                ""
-                                            )
-                                        )}
                                     </CardContent>
                                     <CardActions>
                                         <Button

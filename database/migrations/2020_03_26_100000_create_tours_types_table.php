@@ -19,6 +19,7 @@ class CreateToursTypesTable extends Migration
             $table->integer('type_id')->unsigned()->nullable();
             $table->foreign('tour_id')->references('id')->on('tours')->onDelete('cascade');
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

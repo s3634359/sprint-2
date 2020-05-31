@@ -20,6 +20,7 @@ class CreateToursLocationsTable extends Migration
             $table->integer('location_id')->unsigned()->nullable();
             $table->foreign('tour_id')->references('id')->on('tours')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

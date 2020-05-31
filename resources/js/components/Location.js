@@ -131,45 +131,6 @@ function Location(props) {
         cancel();
     };
 
-    const copy = event => {
-        // copy
-        event.preventDefault();
-        setx_axis(parseFloat(x_axis).toFixed(2));
-        sety_axis(parseFloat(y_axis).toFixed(2));
-
-        var copied = name;
-        copied += "-copy";
-
-        axios
-            .post("/locationSubmit", {
-                name: copied,
-                x_axis: x_axis,
-                y_axis: y_axis,
-                description: description,
-                min_time: minTime
-            })
-            .then(function (response) {
-                // update the list
-                setLocations([
-                    ...locations,
-                    {
-                        id: locations[locations.length - 1].id + 1,
-                        name: copied,
-                        x_axis: x_axis,
-                        y_axis: y_axis,
-                        description: description,
-                        min_time: minTime
-                    }
-                ]);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        // change buttons' state
-        cancel();
-    };
-
     const edit = () => {
         event.preventDefault();
         setx_axis(parseFloat(x_axis).toFixed(2));
@@ -421,15 +382,6 @@ function Location(props) {
                         disabled={editBtn}
                     >
                         Edit
-                    </Button>
-                    <Button
-                        className={classes.submit}
-                        variant="outlined"
-                        color="primary"
-                        onClick={copy}
-                        disabled={editBtn}
-                    >
-                        Copy
                     </Button>
                     <Button
                         className={classes.submit}
